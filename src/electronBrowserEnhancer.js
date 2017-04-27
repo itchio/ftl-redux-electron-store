@@ -57,6 +57,10 @@ export default function electronBrowserEnhancer({
 
       ipcMain.on(`${globalName}-register-renderer`, ({ sender }, { filter, clientId }) => {
         let webContentsId = sender.getId();
+        if (clients[webContentsId] && clients[webContentsId].active) {
+          // HMR is causing a re-register, ignore
+          return;
+        }
         clients[webContentsId] = {
           webContents: sender,
           filter,

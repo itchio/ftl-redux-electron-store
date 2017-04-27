@@ -95,7 +95,9 @@ export default function electronRendererEnhancer({
       };
 
       // Dispatches from other processes are forwarded using this ipc message
-      ipcRenderer.on(`${globalName}-browser-dispatch`, (event, { action, sourceClientId }) => {
+      const browserDispatchEvent = `${globalName}-browser-dispatch`;
+      ipcRenderer.removeAllListeners(browserDispatchEvent);
+      ipcRenderer.on(browserDispatchEvent, (event, { action, sourceClientId }) => {
         const actionParsed = JSON.parse(action);
         if (!synchronous || sourceClientId !== clientId) {
           mainProcessUpdateFlag = true;
