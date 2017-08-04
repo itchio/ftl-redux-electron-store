@@ -42,7 +42,7 @@ export default function electronRendererEnhancer({
 
 
       // Prefetch initial state
-      let storeData = browserStore.getState();
+      let storeData = JSON.parse(browserStore.getJSONState());
       let filteredStoreData = excludeUnfilteredState ? fillShape(storeData, filter) : storeData;
       let preload = stateTransformer(cloneDeep(filteredStoreData)); // Clonedeep is used as remote'd objects are handled in a unique way (breaks redux-immutable-state-invariant)
       let newInitialState = objectMerge(initialState || reducer(undefined, { type: null }), preload);

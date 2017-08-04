@@ -135,6 +135,8 @@ export default function electronBrowserEnhancer({
         return action;
       };
 
+      store.getJSONState = () => JSON.stringify(store.getState());
+
       return store;
     };
   };
