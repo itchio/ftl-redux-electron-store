@@ -1,7 +1,6 @@
 import filterObject from './utils/filter-object';
 import objectMerge from './utils/object-merge';
 import fillShape from './utils/fill-shape';
-import cloneDeep from 'lodash/cloneDeep';
 import getSubscribeFuncs from './getSubscribeFuncs.js';
 
 let globalName = '__REDUX_ELECTRON_STORE__';
@@ -44,7 +43,7 @@ export default function electronRendererEnhancer({
       // Prefetch initial state
       let storeData = JSON.parse(browserStore.getJSONState());
       let filteredStoreData = excludeUnfilteredState ? fillShape(storeData, filter) : storeData;
-      let preload = stateTransformer(cloneDeep(filteredStoreData)); // Clonedeep is used as remote'd objects are handled in a unique way (breaks redux-immutable-state-invariant)
+      let preload = stateTransformer(filteredStoreData);
       let newInitialState = objectMerge(initialState || reducer(undefined, { type: null }), preload);
 
       let clientId = process.guestInstanceId ? `webview ${rendererId}` : `window ${rendererId}`;
