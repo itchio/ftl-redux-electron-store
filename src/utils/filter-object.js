@@ -1,5 +1,6 @@
 import keys from 'lodash/keys';
 import isObject from 'lodash/isObject';
+import isEmpty from 'lodash/isEmpty';
 
 // Given an source object and a filter shape, remove all leaf elements in the shape
 // from the source.  Example:
@@ -9,6 +10,11 @@ import isObject from 'lodash/isObject';
 // (To ensure all uses of this function look the same)
 export default function filterObject(source, filter) {
   if (!source || filter === true) return {};
+  if (isEmpty(filter)) {
+    // no changes
+    return source;
+  }
+
   let filtered = {};
   keys(source).forEach((key) => {
     if (isObject(filter[key])) {

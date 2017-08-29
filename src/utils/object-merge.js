@@ -1,8 +1,15 @@
 import isObject from 'lodash/isObject';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 
 export default function objectMerge(objA, objB) {
   let merged = {};
+  if (isEmpty(objB)) {
+    // no change
+    return objA;
+  }
+
   keys(objA).forEach((key) => {
     let a = objA[key];
     let b = objB[key];
