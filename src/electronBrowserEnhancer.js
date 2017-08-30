@@ -121,11 +121,11 @@ export default function electronBrowserEnhancer({
 
             // If any data the renderer is watching changes, send an ipc
             // call to inform it of the updated and deleted data
-            if (!isEmpty(updated) || !isEmpty(deleted)) {
-              let payload = Object.assign({}, action, { data: { updated, deleted } });
-              let transfer = { action: JSON.stringify(payload), sourceClientId: senderClientId || currentSource };
-              webContents.send(`${globalName}-browser-dispatch`, transfer);
-            }
+            // Note: this used to be conditional, but since we have
+            // reactors on the renderer side (and logging), we want to know about it regardless
+            let payload = Object.assign({}, action, { data: { updated, deleted } });
+            let transfer = { action: JSON.stringify(payload), sourceClientId: senderClientId || currentSource };
+            webContents.send(`${globalName}-browser-dispatch`, transfer);
           }
         }
 
