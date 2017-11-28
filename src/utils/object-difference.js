@@ -10,6 +10,7 @@
 
 import isObject from 'lodash/isObject';
 import isEmpty from 'lodash/isEmpty';
+import isDate from 'lodash/isDate';
 
 export default function objectDifference(oldValue, newValue) {
   let updated = {};
@@ -17,6 +18,14 @@ export default function objectDifference(oldValue, newValue) {
 
   Object.keys(newValue).forEach((key) => {
     if (oldValue[key] === newValue[key]) return;
+
+    if (isDate(newValue[key])) {
+      if ((+oldValue[key]) != (+newValue[key])) {
+        // otherwise, it's the same
+        updated[key] = newValue[key];
+      }
+      return;
+    }
 
     // If there is a difference in the variables, check if they are an actual
     // javascript object (not an array, which typeof says is object).  If they
