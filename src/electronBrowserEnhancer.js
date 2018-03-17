@@ -123,10 +123,9 @@ export default function electronBrowserEnhancer({
             // call to inform it of the updated and deleted data
             // Note: this used to be conditional, but since we have
             // reactors on the renderer side (and logging), we want to know about it regardless
-            // 
-            // However, do not pass the payload, since it could be huge
             let transferredAction = {
               type: action.type,
+              payload: action.payload,
               data: { updated, deleted },
             };
             let transfer = { action: JSON.stringify(transferredAction), sourceClientId: senderClientId || currentSource };
