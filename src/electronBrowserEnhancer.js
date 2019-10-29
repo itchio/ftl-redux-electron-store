@@ -1,6 +1,5 @@
 import fillShape from './utils/fill-shape';
 import objectDifference from './utils/object-difference.js';
-import isEmpty from 'lodash/isEmpty';
 import getSubscribeFuncs from './getSubscribeFuncs.js';
 
 let globalName = '__REDUX_ELECTRON_STORE__';
@@ -20,7 +19,7 @@ export default function electronBrowserEnhancer({
 } = {}) {
   return (storeCreator) => {
     return (reducer, initialState) => {
-      let { ipcMain } = require('electron');
+      let { ipcMain, BrowserWindow } = require('electron');
 
       let store = storeCreator(reducer, initialState);
       global[globalName] = store;
@@ -69,15 +68,17 @@ export default function electronBrowserEnhancer({
           active: true
         };
 
-        if (!sender.isGuest()) { // For windowMap (not webviews)
-          let browserWindow = sender.getOwnerBrowserWindow();
+        let browserWindow = BrowserWindow.fromWebContents(sender);
+        if (browserWindow) { // For windowMap (not webviews)
           if (windowMap[browserWindow.id] !== undefined) {
             unregisterRenderer(windowMap[browserWindow.id]);
           }
           windowMap[browserWindow.id] = webContentsId;
 
           // Webcontents aren't automatically destroyed on window close
-          browserWindow.on('closed', () => unregisterRenderer(webContentsId));
+          browserWindow.on('closed', () => {
+            unregisterRenderer(webContentsId)
+          });
         }
       });
 
