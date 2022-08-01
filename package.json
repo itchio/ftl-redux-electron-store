@@ -1,6 +1,6 @@
 {
   "name": "ftl-redux-electron-store",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Redux store which synchronizes between instances in multiple process",
   "main": "lib/index.js",
   "scripts": {
@@ -29,6 +29,10 @@
   "homepage": "https://github.com/samiskin/redux-electron-store#readme",
   "dependencies": {
     "lodash": "^4.17.15"
+  },
+  "peerDependencies": {
+    "@electron/remote": "^2.0.0",
+    "electron": ">=14"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
